@@ -1,7 +1,7 @@
 <template>
   <h1>Hotlap</h1>
 
-  <DriverInfo />
+  <DriverInfo :data="driverInfoData" />
 
   <IdealLap :data="idealLapData" />
 </template>
@@ -30,6 +30,22 @@ export default {
         state.data = data;
       });
 
+    const driverInfoData = computed(() => {
+      const { data } = state;
+
+      if (data.length === 0) return {};
+
+      const { currentDriver, timing } = data.leaderBoardLines[0];
+      const {
+        shortName, firstName, lastName,
+      } = currentDriver;
+
+      return {
+        driverName: `[${shortName}] ${firstName} ${lastName}`,
+        totalTime: timing.totalTime,
+      };
+    });
+
     const idealLapData = computed(() => {
       const { data } = state;
 
@@ -45,6 +61,7 @@ export default {
 
     return {
       idealLapData,
+      driverInfoData,
     };
   },
 };

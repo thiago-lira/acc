@@ -1,53 +1,31 @@
 <template>
   <ul>
     <li>
-      {{ driver }}
-      - Tempo total: {{ totalTime }}
+      {{ infos.driverName }}
+      - Tempo total: {{ infos.totalTime }}
     </li>
   </ul>
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
-import laps from '@/services/laps';
+import { computed } from 'vue';
 
 export default {
   name: 'DriverInfo',
-  setup() {
-    const state = reactive({
-      data: [],
-    });
-
-    laps
-      .getOverall()
-      .then((data) => {
-        const [leader] = data.leaderBoardLines;
-
-        state.data = leader;
-      });
-
-    const driver = computed(() => {
-      const { data } = state;
-
-      if (data.length === 0) return 0;
-
-      const { shortName, firstName, lastName } = data.currentDriver;
-
-      return `[${shortName}] ${firstName} ${lastName}`;
-    });
-
-    const totalTime = computed(() => {
-      const { data } = state;
-
-      if (data.length === 0) return 0;
-
-      return data.timing.totalTime;
-    });
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props) {
+    const infos = computed(() => ({
+      driverName: props.data.driverName,
+      totalTime: props.data.totalTime,
+    }));
 
     return {
-      state,
-      totalTime,
-      driver,
+      infos,
     };
   },
 };
