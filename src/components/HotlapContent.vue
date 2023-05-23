@@ -1,12 +1,14 @@
 <template>
   <h1>Hotlap</h1>
 
-  <IdealLap :data="idealLapData" />
-
   <div class="d-flex">
     <HotlapChart :data="hotlapChartData" />
 
-    <DriverInfo :data="driverInfoData" />
+    <div>
+      <DriverInfo :data="driverInfoData" />
+
+      <IdealLap :data="idealLapData" />
+    </div>
   </div>
 </template>
 <script>
@@ -117,7 +119,10 @@ export default {
 </script>
 
 <style scoped>
-.d-flex {
-  display: flex;
+@media(min-width: 720px) {
+  .d-flex {
+    display: flex;
+    justify-content: space-evenly;
+  }
 }
 </style>

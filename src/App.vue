@@ -11,6 +11,11 @@
   color: #2c3e50;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
 nav {
   padding: 30px;
 
