@@ -1,71 +1,69 @@
 <template>
-  <h1>Hotlap</h1>
+  <h1>
+    Voltas
+  </h1>
 
-  <DriverInfo :data="driverInfoData" />
-
-  <IdealLap :data="idealLapData" />
+  <Line
+    :data="chart.data"
+    :options="chart.options"
+    class="chart"
+  />
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
-import laps from '@/services/laps';
-import timeFormat from '@/utils/time';
+import { computed } from 'vue';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Line } from 'vue-chartjs';
 
-import DriverInfo from '@/components/DriverInfo.vue';
-import IdealLap from '@/components/IdealLap.vue';
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 export default {
   name: 'HotlapChart',
   components: {
-    IdealLap,
-    DriverInfo,
+    Line,
   },
-  setup() {
-    const state = reactive({
-      data: [],
-    });
-
-    laps
-      .getOverall()
-      .then((data) => {
-        state.data = data;
-      });
-
-    const driverInfoData = computed(() => {
-      const { data } = state;
-
-      if (data.length === 0) return {};
-
-      const { currentDriver, timing } = data.leaderBoardLines[0];
-      const {
-        shortName, firstName, lastName,
-      } = currentDriver;
-
-      return {
-        driverName: `[${shortName}] ${firstName} ${lastName}`,
-        totalTime: timeFormat.getTime(timing.totalTime),
-      };
-    });
-
-    const idealLapData = computed(() => {
-      const { getTime } = timeFormat;
-      const { data } = state;
-
-      if (data.length === 0) return 0;
-
-      const { bestSplits } = data;
-      const idealLap = getTime(bestSplits.reduce((acc, split) => acc + split, 0));
-
-      return {
-        bestSplits: bestSplits.map((split) => getTime(split)),
-        idealLap,
-      };
-    });
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props) {
+    const chart = computed(() => ({
+      options: {
+        responsive: false,
+        maintainAspectRatio: false,
+      },
+      data: props.data,
+    }));
 
     return {
-      idealLapData,
-      driverInfoData,
+      chart,
     };
   },
 };
 </script>
+
+<style scoped>
+.chart {
+  height: 100px;
+  width: 50%;
+}
+</style>
