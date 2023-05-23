@@ -3,6 +3,16 @@
     <li>
       {{ infos.driverName }}
       - Tempo total: {{ infos.totalTime }}
+      - Tempo médio: {{ infos.averageLap }}
+    </li>
+
+    <li>
+      Médias:
+      <ul>
+        <li v-for="(split, index) in infos.averageSplits" :key="split">
+          Setor {{ index + 1 }}: {{ split }}
+        </li>
+      </ul>
     </li>
   </ul>
 </template>
@@ -20,8 +30,7 @@ export default {
   },
   setup(props) {
     const infos = computed(() => ({
-      driverName: props.data.driverName,
-      totalTime: props.data.totalTime,
+      ...props.data,
     }));
 
     return {

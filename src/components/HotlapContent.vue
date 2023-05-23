@@ -77,9 +77,18 @@ export default {
         shortName, firstName, lastName,
       } = currentDriver;
 
+      const lapsData = state.laps;
+      const averageSplits = [
+        lapsData.reduce((acc, { splits }) => splits[0] / lapsData.length + acc, 0),
+        lapsData.reduce((acc, { splits }) => splits[1] / lapsData.length + acc, 0),
+        lapsData.reduce((acc, { splits }) => splits[2] / lapsData.length + acc, 0),
+      ];
+
       return {
         driverName: `[${shortName}] ${firstName} ${lastName}`,
         totalTime: timeFormat.getTime(timing.totalTime),
+        averageSplits: averageSplits.map((time) => timeFormat.getTime(time)),
+        averageLap: timeFormat.getTime(averageSplits.reduce((acc, time) => time + acc, 0)),
       };
     });
 
