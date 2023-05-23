@@ -9,46 +9,35 @@
       </tr>
     </thead>
     <tr>
-      <td v-for="split in state.data.bestSplits" :key="split">
+      <td v-for="split in times.bestSplits" :key="split">
         {{ split }}
       </td>
       <td>
-        {{ idealLap }}
+        {{ times.idealLap }}
       </td>
     </tr>
   </table>
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
-import laps from '@/services/laps';
+import { computed } from 'vue';
 
 export default {
   name: 'IdealLap',
-  setup() {
-    const state = reactive({
-      data: [],
-    });
-
-    laps
-      .getOverall()
-      .then((data) => {
-        state.data = data;
-      });
-
-    const idealLap = computed(() => {
-      const { data } = state;
-
-      if (data.length === 0) return 0;
-
-      const { bestSplits } = data;
-
-      return bestSplits.reduce((acc, split) => acc + split, 0);
-    });
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props) {
+    const times = computed(() => ({
+      bestSplits: props.data.bestSplits,
+      idealLap: props.data.idealLap,
+    }));
 
     return {
-      state,
-      idealLap,
+      times,
     };
   },
 };
