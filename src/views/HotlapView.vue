@@ -1,16 +1,16 @@
 <template>
   <div class="hotlap-view">
-    <HotlapChart />
+    <HotlapContent />
   </div>
 </template>
 
 <script>
-import HotlapChart from '@/components/HotlapChart.vue';
+import HotlapContent from '@/components/HotlapContent.vue';
 
 export default {
   name: 'HotlapView',
   components: {
-    HotlapChart,
+    HotlapContent,
   },
 };
 </script>

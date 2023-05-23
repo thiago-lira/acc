@@ -15,7 +15,7 @@ import DriverInfo from '@/components/DriverInfo.vue';
 import IdealLap from '@/components/IdealLap.vue';
 
 export default {
-  name: 'HotlapChart',
+  name: 'HotlapContent',
   components: {
     IdealLap,
     DriverInfo,
