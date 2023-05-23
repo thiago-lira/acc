@@ -1,8 +1,4 @@
 <template>
-  <h1>
-    Voltas
-  </h1>
-
   <Line
     :data="chart.data"
     :options="chart.options"

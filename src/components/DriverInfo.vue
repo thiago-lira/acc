@@ -1,10 +1,26 @@
 <template>
-  <ul>
-    <li>
-      {{ infos.driverName }}
-      - Tempo total: {{ infos.totalTime }}
-    </li>
-  </ul>
+  <div class="driver-info">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            Nome
+          </th>
+          <th>
+            Tempo total
+          </th>
+        </tr>
+      </thead>
+      <tr>
+        <td>
+          {{ infos.driverName }}
+        </td>
+        <td>
+          {{ infos.totalTime }}
+        </td>
+      </tr>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -20,8 +36,7 @@ export default {
   },
   setup(props) {
     const infos = computed(() => ({
-      driverName: props.data.driverName,
-      totalTime: props.data.totalTime,
+      ...props.data,
     }));
 
     return {

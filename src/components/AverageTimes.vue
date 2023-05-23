@@ -1,6 +1,6 @@
 <template>
   <h2>
-    Volta Ideal
+    Tempo Médio
   </h2>
   <table>
     <thead>
@@ -8,15 +8,17 @@
         <th>S1</th>
         <th>S2</th>
         <th>S3</th>
-        <th>Ideal</th>
+        <th>
+          Volta
+        </th>
       </tr>
     </thead>
     <tr>
-      <td v-for="split in times.bestSplits" :key="split">
+      <td v-for="split in times.averageSplits" :key="split">
         {{ split }}
       </td>
       <td>
-        {{ times.idealLap }}
+        {{ times.averageLap }}
       </td>
     </tr>
   </table>
@@ -26,7 +28,7 @@
 import { computed } from 'vue';
 
 export default {
-  name: 'IdealLap',
+  name: 'AverageTimes',
   props: {
     data: {
       type: Object,
@@ -35,8 +37,7 @@ export default {
   },
   setup(props) {
     const times = computed(() => ({
-      bestSplits: props.data.bestSplits,
-      idealLap: props.data.idealLap,
+      ...props.data,
     }));
 
     return {
