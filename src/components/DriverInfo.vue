@@ -20,29 +20,6 @@
         </td>
       </tr>
     </table>
-
-    <hr>
-
-    <table>
-      <thead>
-        <tr>
-          <th>S1</th>
-          <th>S2</th>
-          <th>S3</th>
-          <th>
-            Tempo médio
-          </th>
-        </tr>
-      </thead>
-      <tr>
-        <td v-for="split in infos.averageSplits" :key="split">
-          {{ split }}
-        </td>
-        <td>
-          {{ infos.averageLap }}
-        </td>
-      </tr>
-    </table>
   </div>
 </template>
 

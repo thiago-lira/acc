@@ -7,6 +7,8 @@
     <div>
       <DriverInfo :data="driverInfoData" />
 
+      <AverageTimes :data="averageTimesData" />
+
       <IdealLap :data="idealLapData" />
     </div>
   </div>
@@ -19,6 +21,7 @@ import timeFormat from '@/utils/time';
 import DriverInfo from '@/components/DriverInfo.vue';
 import IdealLap from '@/components/IdealLap.vue';
 import HotlapChart from '@/components/HotlapChart.vue';
+import AverageTimes from '@/components/AverageTimes.vue';
 
 export default {
   name: 'HotlapContent',
@@ -26,6 +29,7 @@ export default {
     IdealLap,
     DriverInfo,
     HotlapChart,
+    AverageTimes,
   },
   setup() {
     const state = reactive({
@@ -69,6 +73,26 @@ export default {
       };
     });
 
+    const averageTimesData = computed(() => {
+      const { data } = state;
+
+      if (data.length === 0) return {};
+
+      const lapsData = state.laps;
+      const averageSplits = [
+        lapsData.reduce((acc, { splits }) => splits[0] / lapsData.length + acc, 0),
+        lapsData.reduce((acc, { splits }) => splits[1] / lapsData.length + acc, 0),
+        lapsData.reduce((acc, { splits }) => splits[2] / lapsData.length + acc, 0),
+      ];
+
+      return {
+        averageSplits: averageSplits.map((time) => timeFormat.getTime(time)),
+        averageLap: timeFormat.getTime(averageSplits.reduce((acc, time) => time + acc, 0)),
+      };
+    });
+
+    const { getTime } = timeFormat;
+
     const driverInfoData = computed(() => {
       const { data } = state;
 
@@ -79,23 +103,13 @@ export default {
         shortName, firstName, lastName,
       } = currentDriver;
 
-      const lapsData = state.laps;
-      const averageSplits = [
-        lapsData.reduce((acc, { splits }) => splits[0] / lapsData.length + acc, 0),
-        lapsData.reduce((acc, { splits }) => splits[1] / lapsData.length + acc, 0),
-        lapsData.reduce((acc, { splits }) => splits[2] / lapsData.length + acc, 0),
-      ];
-
       return {
         driverName: `[${shortName}] ${firstName} ${lastName}`,
         totalTime: timeFormat.getTime(timing.totalTime),
-        averageSplits: averageSplits.map((time) => timeFormat.getTime(time)),
-        averageLap: timeFormat.getTime(averageSplits.reduce((acc, time) => time + acc, 0)),
       };
     });
 
     const idealLapData = computed(() => {
-      const { getTime } = timeFormat;
       const { data } = state;
 
       if (data.length === 0) return {};
@@ -113,6 +127,7 @@ export default {
       idealLapData,
       driverInfoData,
       hotlapChartData,
+      averageTimesData,
     };
   },
 };

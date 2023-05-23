@@ -12,8 +12,12 @@
 }
 
 table {
-  width: 100%;
   border-collapse: collapse;
+  width: 100%;
+}
+
+table, tr, th, td {
+  border: 1px solid;
 }
 
 nav {
