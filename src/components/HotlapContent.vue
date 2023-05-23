@@ -51,7 +51,7 @@ export default {
       const { getTime } = timeFormat;
       const { data } = state;
 
-      if (data.length === 0) return 0;
+      if (data.length === 0) return {};
 
       const { bestSplits } = data;
       const idealLap = getTime(bestSplits.reduce((acc, split) => acc + split, 0));
